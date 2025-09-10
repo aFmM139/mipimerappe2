@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, useColorScheme } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -7,9 +7,13 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
 export default function HomeScreen() {
+  // Obtener el esquema de color actual (oscuro o claro)
+  const scheme = useColorScheme();
+  const headerBgColor = scheme === 'dark' ? '#1D3D47' : '#A1CEDC';  // Colores de fondo según el tema
+
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={headerBgColor} // Color de fondo ajustado según el tema
       headerImage={
         <Image
           source={require('@/assets/images/partial-react-logo.png')}
@@ -17,8 +21,7 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
+        <ThemedText type="title" style={styles.title}>Hola mundo 💻🧑‍💻💻</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
@@ -30,7 +33,7 @@ export default function HomeScreen() {
               ios: 'cmd + d',
               android: 'cmd + m',
               web: 'F12',
-            })}
+            }) || 'default key'} {/* Usar fallback por si Platform.select falla */}
           </ThemedText>{' '}
           to open developer tools.
         </ThemedText>
@@ -60,6 +63,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    color: 'blue',
+    position: 'relative',  // Aseguramos que el contenedor de la imagen sea relativo
   },
   stepContainer: {
     gap: 8,
@@ -71,5 +76,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
+  },
+  title: {
+    color: 'blue',
   },
 });
